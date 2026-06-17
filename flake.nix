@@ -2,9 +2,7 @@
   description = "A generic flake-parts based flake";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-26.05";
-    # Last commit with nodejs_18
-    nixpkgs_old.url = "nixpkgs/e6031a0";
+    nixpkgs.url = "nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
     treefmt-nix = {
