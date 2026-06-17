@@ -37,7 +37,7 @@
               default = "::";
             };
 
-            package = mkPackageOption self.packages.${system} "rewheel_non-bin";
+            package = mkPackageOption self.packages.${system} "rewheel_non-bin" { };
 
             port = mkOption {
               description = "Host port";
@@ -95,7 +95,7 @@
                     ${cfg.package}/bin/rewheel-web \
                       --host ${cfg.host} \
                       --port ${toString cfg.port} \
-                      ${cfg.extraOptions}
+                      ${lib.concatStringsSep " " cfg.extraOptions}
                   '';
                 };
               };
