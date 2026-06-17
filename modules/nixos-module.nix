@@ -37,7 +37,7 @@
               default = "::";
             };
 
-            package = mkPackageOption self.packages.${system} "rewheel_non-bin" { };
+            package = mkPackageOption self.packages.${system} "default" { };
 
             port = mkOption {
               description = "Host port";

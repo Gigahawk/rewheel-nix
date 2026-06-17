@@ -9,6 +9,9 @@
   src' ? null,
   missingHashes ? ./missing-hashes_non-bin.json,
   offlineCacheHash ? "sha256-HtbYV4sbnF9QbyVhuUHkSVuIEauKSsm+uyV9+X1qURM=",
+  patches ? [
+    ./0001-bugfix-fix-typo-in-applyPatch.js.patch
+  ],
   ...
 }:
 let
@@ -44,12 +47,7 @@ stdenv.mkDerivation (finalAttrs: {
     hash = offlineCacheHash;
   };
 
-  postPatch = ''
-    substituteInPlace "common/src/utils/applyPatch.js" \
-     --replace-fail \
-      "@rewheel/common/src/utils/helpers" \
-      "@rewheel/common/src/utils/helpers.js"
-  '';
+  inherit patches;
 
   buildPhase = ''
     yarn web:build

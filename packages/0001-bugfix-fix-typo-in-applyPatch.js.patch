@@ -1,0 +1,22 @@
+From be0a78973e485f6290a7af0a11999f0100deca06 Mon Sep 17 00:00:00 2001
+From: Jasper Chan <jasperchan515@gmail.com>
+Date: Wed, 17 Jun 2026 12:59:47 -0700
+Subject: [PATCH] bugfix: fix typo in applyPatch.js
+
+---
+ common/src/utils/applyPatch.js | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/common/src/utils/applyPatch.js b/common/src/utils/applyPatch.js
+index c45e9a7..e80fd60 100644
+--- a/common/src/utils/applyPatch.js
++++ b/common/src/utils/applyPatch.js
+@@ -1,4 +1,4 @@
+-import { BSS_LOCATIONS } from "@rewheel/common/src/utils/helpers"
++import { BSS_LOCATIONS } from "@rewheel/common/src/utils/helpers.js"
+ 
+ export const applyPatch = (firmware, revision, patch, lastByteIndex, bssEndIndex, isGT, args) => {
+   let modifications = []
+-- 
+2.53.0
+

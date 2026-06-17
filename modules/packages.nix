@@ -8,6 +8,17 @@
     }:
     {
       packages = rec {
+        rewheel_Gigahawk = pkgs.callPackage ../packages/rewheel.nix {
+          src' = pkgs.fetchFromGitHub {
+            owner = "Gigahawk";
+            repo = "rewheel";
+            rev = "dc606961fc2621cd45087f3dea226828bf2f1f4f";
+            hash = "sha256-O6aUjhKDR4s6StnLZG9MpNqvKSajxS2jIBemRB6GDRY=";
+          };
+          missingHashes = ../packages/missing-hashes_Gigahawk.json;
+          offlineCacheHash = "sha256-IYhMD27JPmyWpqMjgJ3zLt2GE0679WEoIzi8gafjus4=";
+          patches = [ ];
+        };
         rewheel_non-bin = pkgs.callPackage ../packages/rewheel.nix {
           src' = pkgs.fetchFromGitHub {
             owner = "non-bin";
@@ -52,7 +63,7 @@
           offlineCacheHash = "sha256-HtbYV4sbnF9QbyVhuUHkSVuIEauKSsm+uyV9+X1qURM=";
         };
 
-        default = rewheel_non-bin;
+        default = rewheel_Gigahawk;
       };
     };
 }
