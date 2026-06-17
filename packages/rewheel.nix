@@ -1,38 +1,47 @@
 {
+  lib,
   stdenv,
   fetchFromGitHub,
   yarn-berry_3,
   static-web-server,
   nodejs,
   makeWrapper,
+  src' ? null,
+  missingHashes ? ./missing-hashes_non-bin.json,
+  offlineCacheHash ? "sha256-HtbYV4sbnF9QbyVhuUHkSVuIEauKSsm+uyV9+X1qURM=",
   ...
 }:
 let
-  nodejs' = nodejs;
-  yarn-berry = yarn-berry_3.override { nodejs = nodejs'; };
+  src =
+    if src' != null then
+      src'
+    else
+      fetchFromGitHub {
+        owner = "non-bin";
+        repo = "rewheel";
+        rev = "59bc4346eddfe5ebc7e25d7a955227db2e16a21f";
+        hash = "sha256-F0HuwlVS2IKHgQ+5hgfw9jHW8scdpDYlhd/PQorlc5o=";
+      };
+
+  yarn-berry = yarn-berry_3.override { inherit nodejs; };
 in
 stdenv.mkDerivation (finalAttrs: {
   pname = "rewheel";
-  version = "0_unstable_non-bin";
+  version = "0_unstable_${finalAttrs.src.owner}";
 
-  src = fetchFromGitHub {
-    owner = "non-bin";
-    repo = "rewheel";
-    rev = "59bc4346eddfe5ebc7e25d7a955227db2e16a21f";
-    hash = "sha256-F0HuwlVS2IKHgQ+5hgfw9jHW8scdpDYlhd/PQorlc5o=";
-  };
+  inherit src;
 
   nativeBuildInputs = [
-    nodejs'
+    nodejs
     makeWrapper
     yarn-berry
     yarn-berry.yarnBerryConfigHook
   ];
 
-  missingHashes = ./missing-hashes_non-bin.json;
+  inherit missingHashes;
   offlineCache = yarn-berry.fetchYarnBerryDeps {
     inherit (finalAttrs) src missingHashes;
-    hash = "sha256-HtbYV4sbnF9QbyVhuUHkSVuIEauKSsm+uyV9+X1qURM=";
+    hash = offlineCacheHash;
   };
 
   postPatch = ''
@@ -64,4 +73,11 @@ stdenv.mkDerivation (finalAttrs: {
     runHook postInstall
   '';
 
+  meta = {
+    description = "OneWheel firmware modification tool";
+    # Note: taken down, still available on archive.org
+    homepage = "https://rewheel.app";
+    license = lib.licenses.gpl3Only;
+    platforms = lib.platforms.all;
+  };
 })
